@@ -38,6 +38,10 @@ CNC Controller/
 **Touch display closeup**
 <br><br>
 
+![](docs/images/CNC_controller.jpg)
+**Intended use: CNC controller front plate**
+<br><br>
+
 ## Development
 
 1. Install [PlatformIO](https://platformio.org/install/ide?install=vscode) for VS Code.
