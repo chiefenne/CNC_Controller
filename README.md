@@ -97,19 +97,28 @@ Activate exactly one `#define` per the following files.
     #define TOUCH_XPT2046
     ```
 
+#### Touch Interface Wiring
 
-### ESP32-S3 Processor Fix
+The touch controller shares SPI pins with the TFT display. Both controllers share the SPI data and clock lines:
+
+- **T_DO** (touch data out) connects to **TFT_MISO** (pin 13)
+- **T_DIN** (touch data in) connects to **TFT_MOSI** (pin 11)
+- **T_SCK** (touch clock) connects to **TFT_SCLK** (pin 12)
+
+This shared SPI configuration allows both the display and touch controller to communicate over the same bus using separate chip select pins. The three touch pins mentioned above are only relevant for physical wiring - they share the same ESP32 pins as the display's SPI connections.
+
+### TFT_eSPI Library Fix
 
 - **`esp32-s3-devkitc-1/TFT_eSPI/Processors/TFT_eSPI_ESP32_S3.h`**
 
-    Add the following line before `#ifndef REG_SPI_BASE` to prevent execution corruption (that fix may not be permanently needed as the libs will be further developed):
+    Add the following line before `#ifndef REG_SPI_BASE ...` to prevent execution corruption (that fix may not be permanently needed as the libs will be further developed):
 
     ```c
     #undef REG_SPI_BASE
     ```
 
-> **Note:** These modifications are applied to the PlatformIO library dependencies and may need to be reapplied if libraries are updated.
-
+> **Note:** These modifications are applied to the PlatformIO library dependencies and need to be reapplied if the libraries are updated.
+> **Note:** For more information, see this [thread](https://github.com/Bodmer/TFT_eSPI/issues/3743). This issue also affects the version I am using (TFT_eSPI v2.5.43).
 
 ## License
 
