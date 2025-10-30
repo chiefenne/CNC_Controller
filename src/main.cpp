@@ -5,10 +5,13 @@
 #include "input/input_manager.h"
 #include "comm/espnow.h"
 #include "payload.h"
-
+#include "cnc_state.h"
 
 // TFT instance
 TFT_eSPI tft = TFT_eSPI();
+
+// Application state
+static CncState cnc;
 
 // LVGL buffers
 static lv_color_t buf1[SCREEN_WIDTH * 10];
@@ -136,9 +139,73 @@ void my_touch_read(lv_indev_t *drv, lv_indev_data_t *data)
 // Handle input events
 void handle_input_event(const InputEvent &e)
 {
-    Serial.printf("[Input] type=%s id=%d val=%d\n",
-                  input_type_to_str(e.type), e.id, e.value);
 
+    // --- Interpret selector position for CNC mode ---
+    if (e.type == InputType::Selector && e.event == EventType::PositionChange)
+    {
+        switch (e.value)
+        {
+        case 0:
+            cnc.mode = ControlMode::MoveX;
+            break;
+        case 1:
+            cnc.mode = ControlMode::MoveY;
+            break;
+        case 2:
+            cnc.mode = ControlMode::MoveZ;
+            break;
+        case 3:
+            cnc.mode = ControlMode::SelectCoordSystem;
+            break;
+        case 4:
+            cnc.mode = ControlMode::Reserved;
+            break;
+        default:
+            break;
+        }
+
+        Serial.print("→ Control mode set to: ");
+        Serial.println(static_cast<int>(cnc.mode));
+    }
+
+    // --- Handle encoder events based on current mode ---
+    if (e.type == InputType::Encoder)
+    {
+        if (e.event == EventType::Increment || e.event == EventType::Decrement)
+        {
+            int dir = (e.event == EventType::Increment) ? +1 : -1;
+            constexpr float JOG_STEP = 0.1f;
+
+            switch (cnc.mode)
+            {
+                case ControlMode::MoveX:
+                    cnc.machine_pos[0] += dir * JOG_STEP;
+                    Serial.printf("Encoder → move X axis (%+d) | X: %.3f\n", dir, cnc.machine_pos[0]);
+                    break;
+
+                case ControlMode::MoveY:
+                    cnc.machine_pos[1] += dir * JOG_STEP;
+                    Serial.printf("Encoder → move Y axis (%+d) | Y: %.3f\n", dir, cnc.machine_pos[1]);
+                    break;
+
+                case ControlMode::MoveZ:
+                    cnc.machine_pos[2] += dir * JOG_STEP;
+                    Serial.printf("Encoder → move Z axis (%+d) | Z: %.3f\n", dir, cnc.machine_pos[2]);
+                    break;
+
+                case ControlMode::SelectCoordSystem:
+                    cnc.active_cs = max(0, min(cnc.active_cs + dir, 5));
+                    Serial.printf("Encoder → cycle coordinate system (%+d) | G5%d\n", dir, 3 + cnc.active_cs);
+                    break;
+
+                case ControlMode::Reserved:
+                    Serial.printf("Encoder → reserved action (%+d)\n", dir);
+                    break;
+            }
+        }
+    }
+
+    // Send via ESP-NOW (enable or disable in espnow.cpp using tx_enabled flag)
     Payload p = make_payload_from_event(e);
     ESPNOW::send(p);
 }
