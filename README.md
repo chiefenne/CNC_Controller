@@ -24,12 +24,17 @@ CNC Controller/
 ├── platformio.ini    # Environment configuration
 └── README.md
 
+```
+
 ## Hardware Gallery
 
-| Breadboard Prototype | Touchscreen Close-up |
-| --- | --- |
-| _Add image: docs/images/breadboard_setup.jpg | _Add image: docs/images/touch_display_closeup.jpg |
-```
+![](docs/images/breadboard_setup.jpg)
+**Breadboard setup**
+<br><br>
+
+![](docs/images/touch_display_closeup.jpg)
+**Touch display closeup**
+<br><br>
 
 ## Development
 
