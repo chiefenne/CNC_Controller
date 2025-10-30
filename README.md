@@ -39,7 +39,7 @@ CNC Controller/
 <br><br>
 
 ![](docs/images/CNC_controller.jpg)
-*Intended use: CNC controller front plate*
+*Intended use: Wireless CNC controller front plate*
 <br><br>
 
 ## Development
