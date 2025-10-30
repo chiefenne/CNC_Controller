@@ -23,6 +23,12 @@ CNC Controller/
 ├── touch_calibration/# Calibration sketch used for TFT_eSPI touch setup
 ├── platformio.ini    # Environment configuration
 └── README.md
+
+## Hardware Gallery
+
+| Breadboard Prototype | Touchscreen Close-up |
+| --- | --- |
+| _Add image: docs/images/breadboard_setup.jpg | _Add image: docs/images/touch_display_closeup.jpg |
 ```
 
 ## Development
@@ -31,6 +37,7 @@ CNC Controller/
 2. Clone the repository and open the workspace folder `CNC Controller` in VS Code.
 3. Use the **PlatformIO** sidebar to build or upload the `esp32-s3-devkitc-1` environment.
 4. For touch calibration, run the `touch-calibration` environment by modifying `platformio.ini`:
+
     ```ini
     [platformio]
     ; default_envs = esp32-s3-devkitc-1
@@ -38,6 +45,7 @@ CNC Controller/
     default_envs = touch-calibration
     src_dir = touch_calibration
     ```
+
     Comment/uncomment the appropriate lines to switch between environments.
 
 ## Configuration
@@ -54,14 +62,17 @@ Activate exactly one `#define` per the following files.
     ```
 
 - **`esp32-s3-devkitc-1/TFT_eSPI/User_Setup_Select.h`**
+
     ```c
     #include <User_Setups/Setup70b_ESP32_S3_ILI9341.h>
     ```
 
 ### Hardware Pin Configuration
+
 - **`esp32-s3-devkitc-1/TFT_eSPI/User_Setups/Setup70b_ESP32_S3_ILI9341.h`**
 
     Modified pin assignments for custom hardware:
+
     ```c
     #define TFT_MOSI 11
     #define TFT_MISO 13
@@ -75,10 +86,13 @@ Activate exactly one `#define` per the following files.
     #define TOUCH_XPT2046
     ```
 
+
 ### ESP32-S3 Processor Fix
+
 - **`esp32-s3-devkitc-1/TFT_eSPI/Processors/TFT_eSPI_ESP32_S3.h`**
 
     Add the following line before `#ifndef REG_SPI_BASE` to prevent execution corruption (that fix may not be permanently needed as the libs will be further developed):
+
     ```c
     #undef REG_SPI_BASE
     ```
