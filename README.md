@@ -9,7 +9,10 @@ Developed on ESP32-S3-DevKitC-1 with integrated USB and WiFi capabilities for se
 
 - 320x240 ILI9341 display with LVGL-driven tabbed interface
 - Responsive touch handling (XPT2046)
-- Multiple input devices: rotary encoder, switch selector, and momentary buttons
+- Multiple input devices (can be connected or emulated)
+  - Rotary encoder
+  - Switch selector
+  - Momentary push buttons
 - ESP-NOW wireless communication for real-time CNC data exchange
 - Bidirectional command/status protocol with automatic device pairing
   - Receiver acts as a HID keyboard device (not in this repo)
