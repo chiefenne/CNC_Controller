@@ -1,5 +1,7 @@
 # CNC Controller GUI
 
+> 🚧 **Work in Progress:** Hardware layout, firmware features, and UI visuals are evolving rapidly. Expect breaking changes and rough edges.
+
 ESP32-S3 powered touchscreen interface for my CNC wireless controller project. The firmware is built with PlatformIO, the Arduino framework, the TFT_eSPI driver, and LVGL for UI composition.
 Developed on ESP32-S3-DevKitC-1 with integrated USB and WiFi capabilities for seamless development and wireless communication.
 
