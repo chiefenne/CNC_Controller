@@ -118,6 +118,7 @@ This shared SPI configuration allows both the display and touch controller to co
     ```
 
 > **Note:** These modifications are applied to the PlatformIO library dependencies and need to be reapplied if the libraries are updated.
+
 > **Note:** For more information, see this [thread](https://github.com/Bodmer/TFT_eSPI/issues/3743). This issue also affects the version I am using (TFT_eSPI v2.5.43).
 
 ## License
