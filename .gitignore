@@ -1,0 +1,5 @@
+.pio
+.vscode
+.DS_Store
+*.gz
+touch_calibration
