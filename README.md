@@ -12,7 +12,7 @@ Developed on ESP32-S3-DevKitC-1 with integrated USB and WiFi capabilities for se
 - Multiple input devices: rotary encoder, switch selector, and momentary buttons
 - ESP-NOW wireless communication for real-time CNC data exchange
 - Bidirectional command/status protocol with automatic device pairing
-  - Receiver acts as a HID keybaord device (not in this repo)
+  - Receiver acts as a HID keyboard device (not in this repo)
 - PlatformIO multi-environment setup (main firmware + touch calibration)
 
 ## Repository Layout
