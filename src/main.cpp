@@ -21,6 +21,21 @@ void my_disp_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map);
 void my_touch_read(lv_indev_t *drv, lv_indev_data_t *data);
 void handle_input_event(const InputEvent &e);
 
+static const char *input_type_to_str(InputType type)
+{
+    switch (type)
+    {
+    case InputType::Encoder:
+        return "Encoder";
+    case InputType::Selector:
+        return "Selector";
+    case InputType::Button:
+        return "Button";
+    default:
+        return "Unknown";
+    }
+}
+
 
 void setup()
 {
@@ -121,8 +136,8 @@ void my_touch_read(lv_indev_t *drv, lv_indev_data_t *data)
 // Handle input events
 void handle_input_event(const InputEvent &e)
 {
-    Serial.printf("[Input] type=%d id=%d val=%d\n",
-                  static_cast<int>(e.type), e.id, e.value);
+    Serial.printf("[Input] type=%s id=%d val=%d\n",
+                  input_type_to_str(e.type), e.id, e.value);
 
     Payload p = make_payload_from_event(e);
     ESPNOW::send(p);
