@@ -31,15 +31,15 @@ CNC Controller/
 ## Hardware Gallery
 
 ![](docs/images/breadboard_setup.jpg)
-**Breadboard setup**
+*Breadboard setup*
 <br><br>
 
 ![](docs/images/touch_display_closeup.jpg)
-**Touch display closeup**
+*Touch display closeup*
 <br><br>
 
 ![](docs/images/CNC_controller.jpg)
-**Intended use: CNC controller front plate**
+*Intended use: CNC controller front plate*
 <br><br>
 
 ## Development
