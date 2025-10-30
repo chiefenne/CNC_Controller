@@ -21,7 +21,7 @@ Developed on ESP32-S3-DevKitC-1 with integrated USB and WiFi capabilities for se
 CNC Controller/
 ├── include/             # Headers shared across components
 ├── lib/                 # Optional PlatformIO libraries
-├── src/                 # Application sources (GUI, comms)
+├── src/                 # Application sources (GUI, communication, input devices)
 ├── touch_calibration/   # Calibration sketch used for TFT_eSPI touch setup
 ├── platformio.ini       # Environment configuration
 └── README.md
