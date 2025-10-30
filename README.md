@@ -81,7 +81,7 @@ Activate exactly one `#define` per the following files.
     #include <User_Setups/Setup70b_ESP32_S3_ILI9341.h>
     ```
 
-### Hardware Pin Configuration
+### Hardware Pin and Touch Configuration
 
 - **`esp32-s3-devkitc-1/TFT_eSPI/User_Setups/Setup70b_ESP32_S3_ILI9341.h`**
 
