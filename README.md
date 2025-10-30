@@ -1,6 +1,6 @@
 # CNC Controller GUI
 
-ESP32-S3 powered touchscreen interface for the CNC wireless keypad project. The firmware is built with PlatformIO, the Arduino framework, Bodmer's TFT_eSPI driver, and LVGL for UI composition.
+ESP32-S3 powered touchscreen interface for the CNC wireless keypad project. The firmware is built with PlatformIO, the Arduino framework, the TFT_eSPI driver, and LVGL for UI composition.
 Developed on ESP32-S3-DevKitC-1 with integrated USB and WiFi capabilities for seamless development and wireless communication.
 
 ## Features
