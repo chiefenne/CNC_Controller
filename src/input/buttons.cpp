@@ -3,10 +3,12 @@
 
 namespace
 {
+    constexpr bool EMULATE_BUTTONS = true; // set false for real hardware
     constexpr uint32_t DEBOUNCE_MS = 50; // standard button debounce
     uint32_t last_press[NUM_BUTTON_PINS] = {0};
     bool last_state[NUM_BUTTON_PINS] = {true}; // true = released (pull-up active)
     InputEventCallback _callback = nullptr;
+    uint32_t last_emul = 0;
 }
 
 namespace InputManager
@@ -24,6 +26,29 @@ namespace InputManager
 
     void poll_buttons()
     {
+        if (EMULATE_BUTTONS)
+        {
+            // --- emulate button presses every few s ---
+            if (millis() - last_emul > 8000)
+            {
+                last_emul = millis();
+                static int pos = 0;
+                pos = (pos + 1) % NUM_BUTTON_PINS;
+
+                if (_callback)
+                {
+                    InputEvent e;
+                    e.type = InputType::Button;
+                    e.id = 0;
+                    e.event = EventType::PositionChange;
+                    e.value = pos; // 0..NUM_BUTTON_PINS-1
+                    e.timestamp = millis();
+                    _callback(e);
+                }
+            }
+            return;
+        }
+
         for (int i = 0; i < NUM_BUTTON_PINS; ++i)
         {
             bool pressed = (digitalRead(button_pins[i]) == LOW);

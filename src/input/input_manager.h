@@ -5,11 +5,15 @@
 namespace InputManager {
 
 // --- Encoder interface ---
-void begin_encoder(InputEventCallback cb);                       // Init encoder hardware (or emulated)
-void poll_encoder();                        // Called each loop iteration
+void begin_encoder(InputEventCallback cb);    // Init encoder hardware (or emulated)
+void poll_encoder();                          // Called each loop iteration
 
 // --- Selector interface ---
-void begin_selector(InputEventCallback cb);  // Init selector switch
+void begin_selector(InputEventCallback cb);   // Init selector switch
 void poll_selector();                         // Poll selector state
+
+// --- Buttons interface ---
+void begin_buttons(InputEventCallback cb);    // Init buttons
+void poll_buttons();                          // Poll button states
 
 }  // namespace InputManager

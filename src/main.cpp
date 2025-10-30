@@ -65,8 +65,9 @@ void setup()
     ESPNOW::init();
 
     // Initialize input devices
-    InputManager::begin_encoder(handle_input_event); // Encoder (or emulated)
-    InputManager::begin_selector(handle_input_event); // ⬅️ NEW: Selector switch
+    InputManager::begin_encoder(handle_input_event);
+    InputManager::begin_selector(handle_input_event);
+    InputManager::begin_buttons(handle_input_event);
 
     Serial.println("Setup complete");
     Serial.println("Wireless CNC Controller starting...");
@@ -75,8 +76,10 @@ void setup()
 void loop()
 {
 
-    InputManager::poll_encoder();  // read inputs (or simulate)
-    InputManager::poll_selector(); // poll selector switch
+    // Read inputs
+    InputManager::poll_encoder();
+    InputManager::poll_selector();
+    InputManager::poll_buttons();
 
     lv_tick_inc(5);      // tell LVGL how much time has passed
     lv_timer_handler();  // let the GUI do its work
