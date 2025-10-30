@@ -8,8 +8,8 @@ enum class InputType : uint8_t {
 };
 
 enum class EventType : uint8_t {
-    Press = 0,
-    Release,
+    Pressed = 0,
+    Released,
     Increment,
     Decrement,
     PositionChange
