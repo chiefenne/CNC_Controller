@@ -45,7 +45,7 @@ CNC Controller/
 *Intended use: Wireless CNC controller front plate*
 <br><br>
 
-## Development
+## PlatformIO Configuration
 
 1. Install [PlatformIO](https://platformio.org/install/ide?install=vscode) for VS Code.
 2. Clone the repository and open the workspace folder `CNC Controller` in VS Code.
@@ -62,9 +62,9 @@ CNC Controller/
 
     Comment/uncomment the appropriate lines to switch between environments.
 
-## Configuration
+5. The project requires specific adjustments to match the wiring and GPIO pins used (for more information see the [TFT_eSPI wiki](https://github.com/Bodmer/TFT_eSPI/wiki/Installing-on-PlatformIO)).
 
-The project requires specific adjustments to match wireing and used GPOIs (for more information see the [TFT_eSPI wiki](https://github.com/Bodmer/TFT_eSPI/wiki/Installing-on-PlatformIO)).
+    Key settings in `platformio.ini` (adjust to your needs):
 
     ```ini
     [env]
@@ -95,7 +95,7 @@ The project requires specific adjustments to match wireing and used GPOIs (for m
     -D SPI_FREQUENCY=40000000                     ; Set SPI frequency
     ```
 
-#### Touch Interface Wiring
+### Touch Interface Wiring
 
 The touch controller shares SPI pins with the TFT display. Both controllers share the SPI data and clock lines:
 
