@@ -9,12 +9,6 @@
 #define LV_COLOR_16_SWAP 0
 
 /*====================
-   DISPLAY SETTINGS (set now in platformio.ini)
- *====================*/
-// #define LV_HOR_RES_MAX 320
-// #define LV_VER_RES_MAX 240
-
-/*====================
    FONT SETTINGS
  *====================*/
 #define LV_FONT_DEFAULT_MONTSERRAT_14 1
