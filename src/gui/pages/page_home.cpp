@@ -12,7 +12,7 @@ void page_home_create(lv_obj_t *parent)
     lbl_x = lv_label_create(parent);
     lv_label_set_text(lbl_x, "X=+000.000");
     lv_obj_set_style_text_font(lbl_x, &lv_font_roboto_mono_40, 0);
-    lv_obj_align(lbl_x, LV_ALIGN_TOP_MID, -20, 10);
+    lv_obj_align(lbl_x, LV_ALIGN_TOP_MID, -24, 14);
 
     // --- Y coordinate ---
     lbl_y = lv_label_create(parent);
@@ -30,5 +30,5 @@ void page_home_create(lv_obj_t *parent)
     lbl_cs = lv_label_create(parent);
     lv_label_set_text(lbl_cs, "G53");
     lv_obj_set_style_text_font(lbl_cs, &lv_font_montserrat_24, 0);
-    lv_obj_align(lbl_cs, LV_ALIGN_BOTTOM_RIGHT, -10, -10);
+    lv_obj_align(lbl_cs, LV_ALIGN_TOP_RIGHT, -6, 14);
 }
