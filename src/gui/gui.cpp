@@ -63,7 +63,7 @@ void gui_set_page(GuiPage p)
 static void create_header()
 {
     header = lv_obj_create(lv_screen_active());
-    lv_obj_set_size(header, LV_HOR_RES_MAX, HEADER_HEIGHT);
+    lv_obj_set_size(header, TFT_HEIGHT, HEADER_HEIGHT);
     lv_obj_align(header, LV_ALIGN_TOP_MID, 0, 0);
     lv_obj_set_style_bg_color(header, COLOR_HEADER, 0);
     gui_set_style_flat(header);
