@@ -64,40 +64,29 @@ CNC Controller/
 
 ## Configuration
 
-The project requires specific TFT_eSPI library modifications in the `.pio/libdeps` directory. There are several ways to do that. Here is how I did it (fits of course to the wireing I used between ESP32 and display):
-
-### Display Driver Setup
-
-Activate exactly one `#define` per the following files.
-
-- **`esp32-s3-devkitc-1/TFT_eSPI/User_Setup.h`**
-    ```c
-    #define ILI9341_DRIVER
-    ```
-
-- **`esp32-s3-devkitc-1/TFT_eSPI/User_Setup_Select.h`**
+The project requires specific adjustments to match wireing and used GPOIs (for more information see the [TFT_eSPI wiki](https://github.com/Bodmer/TFT_eSPI/wiki/Installing-on-PlatformIO)).
 
     ```c
-    #include <User_Setups/Setup70b_ESP32_S3_ILI9341.h>
-    ```
-
-### Hardware Pin and Touch Configuration
-
-- **`esp32-s3-devkitc-1/TFT_eSPI/User_Setups/Setup70b_ESP32_S3_ILI9341.h`**
-
-    Modified pin assignments for custom hardware:
-
-    ```c
-    #define TFT_MOSI 11
-    #define TFT_MISO 13
-    #define TFT_SCLK 12
-    #define TFT_CS   10
-    #define TFT_DC   8
-    #define TFT_RST  9
-
-    #define TOUCH_CS 14
-    #define TOUCH_IRQ 7
-    #define TOUCH_XPT2046
+    build_flags =
+    -D USER_SETUP_LOADED=1
+    -I include
+    -D ILI9341_DRIVER=1                           ; Select ILI9341 driver
+    -D TFT_WIDTH=240                              ; Set TFT size
+    -D TFT_HEIGHT=320
+    -D SCREEN_WIDTH=TFT_HEIGHT                    ; Set screen size as used in landscape
+    -D SCREEN_HEIGHT=TFT_WIDTH
+    -D TFT_MISO=13                                ; Define SPI pins
+    -D TFT_MOSI=11
+    -D TFT_SCLK=12
+    -D TFT_CS=10
+    -D TFT_DC=8                                   ; Data/Comand pin
+    -D TFT_RST=9                                  ; Reset pin
+    -D TOUCH_CS=14                                ; Define touch pins
+    -D TOUCH_IRQ=7                                ; Not used
+    -D TOUCH_XPT2046=1                            ; XPT2046 touch controller
+    -D LOAD_GLCD=1                                ; Load Fonts
+    -D SMOOTH_FONT=1
+    -D SPI_FREQUENCY=40000000                     ; Set SPI frequency
     ```
 
 #### Touch Interface Wiring
