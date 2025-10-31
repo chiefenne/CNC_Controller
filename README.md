@@ -95,7 +95,7 @@ CNC Controller/
     -D SPI_FREQUENCY=40000000                     ; Set SPI frequency
     ```
 
-### Touch Interface Wiring
+## Touch Interface Wiring
 
 The touch controller shares SPI pins with the TFT display. Both controllers share the SPI data and clock lines:
 
@@ -105,7 +105,7 @@ The touch controller shares SPI pins with the TFT display. Both controllers shar
 
 This shared SPI configuration allows both the display and touch controller to communicate over the same bus using separate chip select pins. The three touch pins mentioned above are only relevant for physical wiring - they share the same ESP32 pins as the display's SPI connections.
 
-### TFT_eSPI Library Fix
+## TFT_eSPI Library Fix
 
 - **`esp32-s3-devkitc-1/TFT_eSPI/Processors/TFT_eSPI_ESP32_S3.h`**
 
@@ -118,6 +118,13 @@ This shared SPI configuration allows both the display and touch controller to co
 > **Note:** These modifications are applied to the PlatformIO library dependencies and need to be reapplied if the libraries are updated.
 
 > **Note:** For more information, see this [thread](https://github.com/Bodmer/TFT_eSPI/issues/3743). This issue also affects the version I am using (TFT_eSPI v2.5.43).
+
+## Fonts
+
+Additional fonts are generated using the [LVGL font converter](https://lvgl.io/tools/fontconverter). Download a font from [Google Fonts](https://fonts.google.com/) and process it through the font converter. Save the generated `*.c` file in the `src/fonts` folder and register it in `include/fonts.h` using the name specified in the font converter:
+```
+extern const lv_font_t lv_font_roboto_mono_40;
+```
 
 ## License
 
