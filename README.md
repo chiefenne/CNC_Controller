@@ -66,7 +66,13 @@ CNC Controller/
 
 The project requires specific adjustments to match wireing and used GPOIs (for more information see the [TFT_eSPI wiki](https://github.com/Bodmer/TFT_eSPI/wiki/Installing-on-PlatformIO)).
 
-    ```c
+    ```ini
+    [env]
+    monitor_speed = 115200
+    lib_deps =
+    bodmer/TFT_eSPI@^2.5.43
+    <https://github.com/PaulStoffregen/XPT2046_Touchscreen.git>
+    lvgl/lvgl@^9.3.0
     build_flags =
     -D USER_SETUP_LOADED=1
     -I include
