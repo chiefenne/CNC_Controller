@@ -188,21 +188,25 @@ void handle_input_event(const InputEvent &e)
                 case ControlMode::MoveX:
                     cnc.machine_pos[0] += dir * JOG_STEP;
                     Serial.printf("Encoder → move X axis (%+d) | X: %.3f\n", dir, cnc.machine_pos[0]);
+                    page_home_update();
                     break;
 
-                case ControlMode::MoveY:
+                    case ControlMode::MoveY:
                     cnc.machine_pos[1] += dir * JOG_STEP;
                     Serial.printf("Encoder → move Y axis (%+d) | Y: %.3f\n", dir, cnc.machine_pos[1]);
+                    page_home_update();
                     break;
 
-                case ControlMode::MoveZ:
+                    case ControlMode::MoveZ:
                     cnc.machine_pos[2] += dir * JOG_STEP;
                     Serial.printf("Encoder → move Z axis (%+d) | Z: %.3f\n", dir, cnc.machine_pos[2]);
+                    page_home_update();
                     break;
 
-                case ControlMode::SelectCoordSystem:
+                    case ControlMode::SelectCoordSystem:
                     cnc.active_cs = max(0, min(cnc.active_cs + dir, 5));
                     Serial.printf("Encoder → cycle coordinate system (%+d) | G5%d\n", dir, 3 + cnc.active_cs);
+                    page_home_update();
                     break;
 
                 case ControlMode::Reserved:
