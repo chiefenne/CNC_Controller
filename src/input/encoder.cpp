@@ -4,7 +4,7 @@
 namespace
 {
     // --- Configuration ---
-    constexpr bool EMULATE_ENCODER = true; // set true for simulated steps
+    constexpr bool EMULATE_ENCODER = false; // set true for simulated steps
     constexpr uint32_t DEBOUNCE_US = 1500;  // ignore faster transitions (µs)
 
     // --- State ---
