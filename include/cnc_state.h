@@ -16,3 +16,5 @@ struct CncState {
     float machine_pos[3] = {0.0f, 0.0f, 0.0f};
     float offsets[6][3] = {};                // G54–G59 offsets
 };
+
+extern CncState cnc;   // <— this line is required to declare the global variable

@@ -6,12 +6,15 @@
 #include "comm/espnow.h"
 #include "payload.h"
 #include "cnc_state.h"
+#include "gui/pages/page_home.h"
 
 // TFT instance
 TFT_eSPI tft = TFT_eSPI();
 
-// Application state
-static CncState cnc;
+// Initialize global CNC state
+#include "cnc_state.h"
+
+CncState cnc;
 
 // LVGL buffers
 static lv_color_t buf1[SCREEN_WIDTH * 10];
@@ -87,6 +90,10 @@ void setup()
     InputManager::begin_selector(handle_input_event);
     InputManager::begin_buttons(handle_input_event);
 
+    // Set initial CNC mode fixed for testing
+    Serial.print("Initial selector control mode: ");
+    Serial.println(static_cast<int>(cnc.mode));
+
     Serial.println("Setup complete");
     Serial.println("Wireless CNC Controller starting...");
 }
@@ -96,7 +103,7 @@ void loop()
 
     // Read inputs
     InputManager::poll_encoder();
-    InputManager::poll_selector();
+    // InputManager::poll_selector();
     InputManager::poll_buttons();
 
     lv_tick_inc(5);      // tell LVGL how much time has passed
@@ -174,7 +181,7 @@ void handle_input_event(const InputEvent &e)
         if (e.event == EventType::Increment || e.event == EventType::Decrement)
         {
             int dir = (e.event == EventType::Increment) ? +1 : -1;
-            constexpr float JOG_STEP = 0.1f;
+            constexpr float JOG_STEP = 1.0f;
 
             switch (cnc.mode)
             {
