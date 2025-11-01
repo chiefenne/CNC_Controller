@@ -37,7 +37,7 @@ CNC Controller/
 *Breadboard setup*
 <br><br>
 
-![](docs/images/touch_display_closeup.jpg)
+![](docs/images/touch_display_closeup_new.jpg)
 *Touch display closeup*
 <br><br>
 
