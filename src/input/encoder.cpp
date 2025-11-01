@@ -1,55 +1,41 @@
-#include "input_manager.h"
 #include "pins.h"
+#include "input_events.h"
+#include "input_manager.h"
+#include <Arduino.h>
 
-namespace
-{
-    // --- Configuration ---
-    constexpr bool EMULATE_ENCODER = false; // set true for simulated steps
-    constexpr uint32_t DEBOUNCE_US = 1500;  // ignore faster transitions (µs)
-
-    // --- State ---
-    volatile uint8_t last_state = 0;
-    volatile int8_t step_dir = 0;
-    volatile uint32_t last_step_time = 0;
-    InputEventCallback _callback = nullptr;
-
-    // --- Quadrature lookup table ---
-    // index = old_state<<2 | new_state  →  +1 / -1 / 0
-    const int8_t quad_table[16] = {
-        0, -1, +1, 0,
-        +1, 0, 0, -1,
-        -1, 0, 0, +1,
-        0, +1, -1, 0};
-
-    volatile int8_t pending_dir = 0;
-
-    // --- Interrupt handler ---
-    // IRAM_ATTR: put code in Instruction RAM for faster execution, e.g., ISRs
-    void IRAM_ATTR handle_encoder_change()
-    {
-        uint8_t a = digitalRead(encoder_pins[0]);
-        uint8_t b = digitalRead(encoder_pins[1]);
-        uint8_t new_state = (a << 1) | b;
-
-        uint8_t index = (last_state << 2) | new_state;
-        int8_t delta = quad_table[index]; // ✅ define delta here
-        last_state = new_state;
-
-        uint32_t now = micros(); // ✅ define now here
-        if (delta != 0 && (now - last_step_time) > DEBOUNCE_US)
-        {
-            last_step_time = now;
-            step_dir = delta; // just store direction
-        }
-    }
-
-    // --- Emulation state ---
-    uint32_t last_emul = 0;
-}
+#define EMULATE_ENCODER 0 // 1 = simulate encoder, 0 = use real hardware
 
 namespace InputManager
 {
+    // ---------------------------------------------------------------------
+    // Configuration
+    // ---------------------------------------------------------------------
+    constexpr uint32_t DEBOUNCE_US = 700; // µs debounce threshold
+    volatile int8_t step_dir = 0;
+    volatile uint32_t last_us = 0;
 
+    static InputEventCallback _callback = nullptr;
+
+    // ---------------------------------------------------------------------
+    // ISR: one pulse per detent, direction from phase relation
+    // ---------------------------------------------------------------------
+    void IRAM_ATTR handle_encoder_change()
+    {
+        uint32_t now = micros();
+        if (now - last_us < DEBOUNCE_US)
+            return;
+        last_us = now;
+
+        bool a = digitalRead(encoder_pins[0]);
+        bool b = digitalRead(encoder_pins[1]);
+
+        // determine direction: if A==B → clockwise; else counter-clockwise
+        step_dir = (a == b) ? +1 : -1;
+    }
+
+    // ---------------------------------------------------------------------
+    // Initialize encoder hardware
+    // ---------------------------------------------------------------------
     void begin_encoder(InputEventCallback cb)
     {
         _callback = cb;
@@ -57,12 +43,15 @@ namespace InputManager
         for (int i = 0; i < NUM_ENCODER_PINS; ++i)
             pinMode(encoder_pins[i], INPUT_PULLUP);
 
-        last_state = (digitalRead(encoder_pins[0]) << 1) | digitalRead(encoder_pins[1]);
+        // attach ISR only to channel A
         attachInterrupt(digitalPinToInterrupt(encoder_pins[0]), handle_encoder_change, CHANGE);
-        attachInterrupt(digitalPinToInterrupt(encoder_pins[1]), handle_encoder_change, CHANGE);
-        Serial.println("✅ Encoder initialized with debounce");
+
+        Serial.println("✅ Encoder initialized (1 pulse per detent)");
     }
 
+    // ---------------------------------------------------------------------
+    // Polling: emit events to application
+    // ---------------------------------------------------------------------
     void poll_encoder()
     {
         if (EMULATE_ENCODER)
@@ -80,19 +69,16 @@ namespace InputManager
                 e.value = dir;
                 e.timestamp = millis();
                 _callback(e);
-                dir = -dir; // alternate direction
+                dir = -dir;
             }
             return;
         }
 
-        // --- real encoder: consume step_dir set by ISR ---
-        static int8_t last_dir = 0;
-        int8_t dir = step_dir; // copy volatile variable locally
+        int8_t dir = step_dir; // consume direction set by ISR
         if (dir != 0)
         {
-            last_dir = dir;
+            step_dir = 0; // reset flag
 
-            // build event outside interrupt
             if (_callback)
             {
                 InputEvent e;
@@ -103,8 +89,6 @@ namespace InputManager
                 e.timestamp = millis();
                 _callback(e);
             }
-
-            step_dir = 0; // reset after handling
         }
     }
 
