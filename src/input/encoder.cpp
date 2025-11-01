@@ -88,7 +88,7 @@ namespace InputManager
         // --- real encoder: consume step_dir set by ISR ---
         static int8_t last_dir = 0;
         int8_t dir = step_dir; // copy volatile variable locally
-        if (dir != 0 && dir != last_dir)
+        if (dir != 0)
         {
             last_dir = dir;
 
