@@ -95,19 +95,10 @@ namespace ESPNOW
         memcpy(tx_buffer, data, len);
         tx_len = len;
 
-        Serial.print("📦 ESP-NOW payload: ");
-        for (size_t i = 0; i < tx_len; ++i)
-        {
-            Serial.printf("%02X", tx_buffer[i]);
-            if (i + 1 < tx_len)
-                Serial.print(' ');
-        }
-        Serial.println();
-
         // debug: simulate send disabled
         if (!tx_enabled)
         {
-            Serial.println("🚫 [Test Mode] ESP-NOW send skipped (radio disabled)");
+            // Serial.println("🚫 [Test Mode] ESP-NOW send skipped (radio disabled)");
             delay(5);
             return true;
         }
